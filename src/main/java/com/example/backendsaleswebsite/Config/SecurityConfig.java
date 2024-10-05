@@ -1,4 +1,4 @@
-package com.example.backendsaleswebsite.config;
+package com.example.backendsaleswebsite.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
