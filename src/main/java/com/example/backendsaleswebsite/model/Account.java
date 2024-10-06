@@ -27,8 +27,8 @@ public class Account {
 	@Column(nullable = false)
 	private Boolean role;
 	
-	@Column(nullable = false)
-	private Long voucherID;
+	@Column(nullable = true)
+	private Long voucherId;
 	
 	//Getters and Setters
 	public Long getUserId() {
@@ -88,10 +88,10 @@ public class Account {
 	}
 	
 	public Long getVoucherID() {
-		return voucherID;
+		return voucherId;
 	}
 	
 	public void setVoucherID(Long voucherID) {
-		this.voucherID = voucherID;
+		this.voucherId = voucherID;
 	}
 }
