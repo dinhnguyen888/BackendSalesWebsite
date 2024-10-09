@@ -36,7 +36,8 @@ public class Account{
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	
+  
+  
 	public enum Role {
 		User,
 		Admin;

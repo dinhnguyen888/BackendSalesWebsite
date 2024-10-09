@@ -6,6 +6,7 @@ import com.example.backendsaleswebsite.dto.LoginRequest;
 import com.example.backendsaleswebsite.exception.AppException;
 import com.example.backendsaleswebsite.exception.ErrorCode;
 import com.example.backendsaleswebsite.jwt.JwtUtil;
+import com.example.backendsaleswebsite.dto.RegisterRequest; // Nhập RegisterRequest
 import com.example.backendsaleswebsite.model.Account;
 import com.example.backendsaleswebsite.repository.AccountRepository;
 
@@ -40,13 +41,14 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PUBLIC, makeFinal = true)
 public class AuthService {
-	
 	@Autowired
 	private AccountRepository accountRepository;
-	
 	private String SIGNER_KEY = "GaHQG6SjkCOQBF5yspA4Bd+t1EGA1gP+UP++0odDou9MUNdArwKwCX1kmqtSlEhQ";
-	
-	public AuthenticationResponse login (AuthenticationRequest request) {
+
+	// Hàm login
+	public boolean login(LoginRequest loginRequest) {
+
+
 		
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         var user = accountRepository
@@ -87,4 +89,26 @@ public class AuthService {
 			throw new RuntimeException(e);
 		}
 	}
+
+	// ham register
+	public boolean register(RegisterRequest registerRequest) {
+		Optional<Account> existingAccount = accountRepository.findByEmail(registerRequest.email());
+
+
+	    if (existingAccount.isPresent()) {
+	        return false; // Tài khoản đã tồn tại
+	    }
+
+	    // Tạo tài khoản mới
+	  
+	    Account newAccount = new Account();
+	    newAccount.setEmail(registerRequest.email());
+	    newAccount.setUserName(registerRequest.userName());
+	    newAccount.setPassword(passwordEncoder.encode(registerRequest.password()));
+	    newAccount.setRole(Account.Role.User);
+
+	    accountRepository.save(newAccount); 
+	    return true; 
+	}
+
 }
