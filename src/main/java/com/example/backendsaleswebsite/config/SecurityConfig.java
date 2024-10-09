@@ -17,15 +17,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Cho phép tất cả yêu cầu
+                        .anyRequest().permitAll()
                 )
-                .csrf(AbstractHttpConfigurer::disable); // Tắt CSRF nếu cần
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
     
     @Bean
     public PasswordEncoder passwordEncoder() {
-    	return new BCryptPasswordEncoder();  //Mã hóa mật khẩu 
+    	return new BCryptPasswordEncoder();
     }
 }

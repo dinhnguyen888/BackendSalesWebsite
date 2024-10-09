@@ -1,24 +1,10 @@
 package com.example.backendsaleswebsite.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.backendsaleswebsite.model.Account.Role; // Import Role từ Account
 
 public record RegisterRequest(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long userId,
-
-    @Column(unique = true, nullable = false)
-	String email,
-    
-    @Column(nullable = false)
+    String email,
     String userName,
-
-    @Column(nullable = false)
     String password,
-
-    @Column(nullable = false)
-    Boolean role
+    Role role // Sử dụng enum Role từ Account
 ) {}
