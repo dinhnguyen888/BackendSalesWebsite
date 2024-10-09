@@ -49,6 +49,7 @@ public class AuthService {
 	    newAccount.setRole(registerRequest.role()); // Thiết lập vai trò người dùng
 
 	    accountRepository.save(newAccount); // Lưu tài khoản vào cơ sở dữ liệu
+	    
 	    return true; // Đăng ký thành công
 	}
 
