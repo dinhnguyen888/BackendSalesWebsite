@@ -43,14 +43,13 @@ import org.slf4j.LoggerFactory;
 public class AuthService {
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	private String SIGNER_KEY = "GaHQG6SjkCOQBF5yspA4Bd+t1EGA1gP+UP++0odDou9MUNdArwKwCX1kmqtSlEhQ";
 
-	// Hàm login
-	public boolean login(LoginRequest loginRequest) {
-
-
-		
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+	public AuthenticationResponse login(AuthenticationRequest request) {
         var user = accountRepository
                 .findByEmail(request.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
