@@ -35,18 +35,20 @@ public class AuthService {
 	// ham register
 	public boolean register(RegisterRequest registerRequest) {
 	    // Kiểm tra xem tài khoản đã tồn tại hay chưa
-	    Optional<Account> existingAccount = accountRepository.findByEmail(registerRequest.userName()); // Nếu userName là email
+		Optional<Account> existingAccount = accountRepository.findByEmail(registerRequest.email());
+
 
 	    if (existingAccount.isPresent()) {
 	        return false; // Tài khoản đã tồn tại
 	    }
 
 	    // Tạo tài khoản mới
+	  
 	    Account newAccount = new Account();
 	    newAccount.setEmail(registerRequest.email()); // Giả sử đây là email
 	    newAccount.setUserName(registerRequest.userName());
 	    newAccount.setPassword(passwordEncoder.encode(registerRequest.password())); // Mã hóa mật khẩu
-	    newAccount.setRole(registerRequest.role()); // Thiết lập vai trò người dùng
+	    newAccount.setRole(Account.Role.User);
 
 	    accountRepository.save(newAccount); // Lưu tài khoản vào cơ sở dữ liệu
 	    return true; // Đăng ký thành công

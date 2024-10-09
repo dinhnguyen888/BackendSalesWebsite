@@ -25,10 +25,9 @@ public class Account {
 	private Long phoneNumber;
 	
 	@Column(nullable = false)
-	private Boolean role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
-	@Column(nullable = true)
-	private Long voucherId;
 	
 	//Getters and Setters
 	public Long getUserId() {
@@ -79,19 +78,16 @@ public class Account {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public Boolean getRole() {
+	public Role getRole() {
 		return role;
 	}
 	
-	public void setRole(Boolean role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	
-	public Long getVoucherID() {
-		return voucherId;
-	}
 	
-	public void setVoucherID(Long voucherID) {
-		this.voucherId = voucherID;
+	public enum Role{
+		 User, Admin;
 	}
 }
