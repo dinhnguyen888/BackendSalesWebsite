@@ -105,7 +105,6 @@ public class AuthService {
 	    newAccount.setUserName(registerRequest.userName());
 	    newAccount.setPassword(passwordEncoder.encode(registerRequest.password()));
 	    newAccount.setRole(Account.Role.User);
-
 	    accountRepository.save(newAccount); 
 	    return true; 
 	}
