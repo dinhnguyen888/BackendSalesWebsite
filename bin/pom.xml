@@ -71,6 +71,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
 <!--		them dependency cho mysql-->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -81,6 +82,12 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
+=======
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version> <!-- Sử dụng phiên bản mới nhất -->
+>>>>>>> branch 'master' of https://github.com/dinhnguyen888/BackendSalesWebsite.git
 		</dependency>
 
 
