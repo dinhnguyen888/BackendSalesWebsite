@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version><!--$NO-MVN-MAN-VER$-->
+            <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
 
@@ -90,6 +90,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+    		<groupId>com.nimbusds</groupId>
+    		<artifactId>nimbus-jose-jwt</artifactId>
+    		<version>9.30.1</version>
+		</dependency>
         
     </dependencies>
 
