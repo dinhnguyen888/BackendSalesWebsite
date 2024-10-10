@@ -13,9 +13,9 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/{cartId}")
-    public Cart getCartById(@PathVariable Long cartId) {
-        return cartService.getCartByUserId(cartId);
+    @GetMapping("/{userId}")
+    public Cart getCartById(@PathVariable Long userId) {
+        return cartService.getCartByUserId(userId);
     }
 
     @PostMapping("/add")

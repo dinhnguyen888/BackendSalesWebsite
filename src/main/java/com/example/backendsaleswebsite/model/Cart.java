@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor  // Thêm constructor mặc định không tham số
+@NoArgsConstructor 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Cart {
