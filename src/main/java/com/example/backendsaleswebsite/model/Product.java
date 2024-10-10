@@ -11,18 +11,15 @@ public class Product {
 	
 	@Column(nullable = true)
 	private String productName;
+
+	@Column(nullable = true)
+	private String manufacturer;
 	
 	@Column(nullable = true)
-	private Long productQuantity;
+	private Long cost;
 	
 	@Column(nullable = true)
-	private String productManufacturer;
-	
-	@Column(nullable = true)
-	private Long productCost;
-	
-	@Column(nullable = true)
-	private Long productCategoryId;
+	private Long categoryId;
 	
 	//Getters and Setters
 	
@@ -33,7 +30,6 @@ public class Product {
 		this.productId = productId;
 	}
 	
-	
 	public String getProductName() {
 		return productName;
 	}
@@ -41,35 +37,26 @@ public class Product {
 		this.productName = productName;
 	}
 	
-	
-	public Long getProductQuantity() {
-		return productQuantity;
-	}
-	public void setProductQuantity(Long productQuantity) {
-		this.productQuantity = productQuantity;
-	}
-	
-	
 	public String getManufacturer() {
-		return productManufacturer;
+		return manufacturer;
 	}
-	public void setProductManufacturer(String productManufacturer) {
-		this.productManufacturer = productManufacturer;
-	}
-	
-	
-	public Long getProductCost() {
-		return productCost;
-	}
-	public void setProductCost(Long productCost) {
-		this.productCost = productCost;
+	public void setmanufacturer(String productManufacturer) {
+		this.manufacturer = productManufacturer;
 	}
 	
-	
-	public Long getProductCategoryId() {
-		return productCategoryId;
+	public Long getCost() {
+		return cost;
 	}
-	public void setProductCategoryId(Long productCategoryId) {
-		this.productCategoryId = productCategoryId;
+	
+	public void setCost(Long cost) {
+		this.cost = cost;
+	}
+	
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 }
