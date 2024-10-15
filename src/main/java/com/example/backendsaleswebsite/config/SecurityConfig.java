@@ -25,8 +25,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class SecurityConfig {
 
 	private final String[] END_POINT = {"/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**",
-										"/login", "/register", "/introspect", "/vnpay-payment", "/submitOrder"};
-	
+										"/auth/**", "/categories/**", "/account/**",  "/vnpay-payment", "/submitOrder"};
+
 	private String SIGNER_KEY = "GaHQG6SjkCOQBF5yspA4Bd+t1EGA1gP+UP++0odDou9MUNdArwKwCX1kmqtSlEhQ";
 	
     @Bean

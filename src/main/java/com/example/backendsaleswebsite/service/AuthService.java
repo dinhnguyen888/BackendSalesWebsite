@@ -4,20 +4,16 @@ import com.example.backendsaleswebsite.dto.AuthenticationRequest;
 import com.example.backendsaleswebsite.dto.AuthenticationResponse;
 import com.example.backendsaleswebsite.dto.IntrospectRequest;
 import com.example.backendsaleswebsite.dto.IntrospectResponse;
-import com.example.backendsaleswebsite.dto.LoginRequest;
 import com.example.backendsaleswebsite.exception.AppException;
 import com.example.backendsaleswebsite.exception.ErrorCode;
 import com.example.backendsaleswebsite.jwt.JwtUtil;
-import com.example.backendsaleswebsite.dto.RegisterRequest; // Nhập RegisterRequest
+import com.example.backendsaleswebsite.dto.RegisterRequest;
 import com.example.backendsaleswebsite.model.Account;
 import com.example.backendsaleswebsite.repository.AccountRepository;
 
 import java.util.Optional;
 
-import javax.net.ssl.SSLPeerUnverifiedException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
