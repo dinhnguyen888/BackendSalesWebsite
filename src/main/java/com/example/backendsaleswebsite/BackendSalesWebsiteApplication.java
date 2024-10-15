@@ -8,7 +8,8 @@ public class BackendSalesWebsiteApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendSalesWebsiteApplication.class, args);
-		System.out.println("Heloofj");
+		System.out.println("Helook");
+
 	}
 	
 
