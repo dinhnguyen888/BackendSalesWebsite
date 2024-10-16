@@ -4,6 +4,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,6 +28,7 @@ public class SecurityConfig {
 	private final String[] END_POINT = {"/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**",
 										"/auth/**", "/categories/**", "/account/**",  "/vnpay-payment", "/submitOrder"};
 
+
 	private String SIGNER_KEY = "GaHQG6SjkCOQBF5yspA4Bd+t1EGA1gP+UP++0odDou9MUNdArwKwCX1kmqtSlEhQ";
 	
     @Bean
@@ -34,6 +36,7 @@ public class SecurityConfig {
     	httpSecurity
 			.authorizeHttpRequests(request -> 
 			request.requestMatchers(END_POINT).permitAll()
+			.requestMatchers(HttpMethod.GET, "/account").hasAuthority("SCOPE_Admin")
 			.anyRequest().authenticated());
     	
     	httpSecurity

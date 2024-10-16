@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.backendsaleswebsite.model.Account;
@@ -14,9 +15,13 @@ public class AccountService {
 	
 	@Autowired
     private AccountRepository accountRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
     public Account createAccount(Account account) {
-        return accountRepository.save(account);
+    	account.setPassword(passwordEncoder.encode(account.getPassword()));
+    	return accountRepository.save(account);
     }
 
     public List<Account> getAllAccounts() {
@@ -32,7 +37,11 @@ public class AccountService {
 
         account.setUserName(accountDetails.getUserName());
         account.setEmail(accountDetails.getEmail());
-        account.setPassword(accountDetails.getPassword());
+        
+        if (!account.getPassword().equals(accountDetails.getPassword())) {
+            account.setPassword(passwordEncoder.encode(accountDetails.getPassword()));
+        }
+        
         account.setAddress(accountDetails.getAddress());
         account.setPhoneNumber(accountDetails.getPhoneNumber());
         account.setRole(accountDetails.getRole());

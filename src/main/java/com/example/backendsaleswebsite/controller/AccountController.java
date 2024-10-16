@@ -49,8 +49,8 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Xóa tài khoản thành công!");
     }
 }
