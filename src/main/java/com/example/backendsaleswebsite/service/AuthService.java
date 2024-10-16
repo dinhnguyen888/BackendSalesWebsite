@@ -78,6 +78,7 @@ public class AuthService {
 				.issuer("4TNGears.com")
 				.issueTime(new Date())
 				.expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
+				.claim("scope", account.getRole())
 				.build();
 		
 		Payload payload = new Payload(jwtClaimsSet.toJSONObject());
