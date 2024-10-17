@@ -4,9 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.backendsaleswebsite.dto.AccountResponse;
+import com.example.backendsaleswebsite.exception.AppException;
+import com.example.backendsaleswebsite.exception.ErrorCode;
 import com.example.backendsaleswebsite.model.Account;
 import com.example.backendsaleswebsite.repository.AccountRepository;
 
@@ -24,12 +31,31 @@ public class AccountService {
     	return accountRepository.save(account);
     }
 
+    @PreAuthorize("hasRole('Admin')")
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
-
+    
+    @PostAuthorize("returnObject.isPresent() && returnObject.get().email == authentication.name")
     public Optional<Account> getAccountById(Long id) {
         return accountRepository.findById(id);
+    }
+    
+    public AccountResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+
+        Account user = accountRepository.findByEmail(name)
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        AccountResponse userResponse = new AccountResponse();
+        userResponse.setUserId(user.getUserId());
+        userResponse.setUserName(user.getUserName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setAddress(user.getAddress());
+        userResponse.setPhoneNumber(user.getPhoneNumber());
+
+        return userResponse;
     }
 
     public Account updateAccount(Long id, Account accountDetails) {
