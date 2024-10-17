@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backendsaleswebsite.dto.AccountResponse;
 import com.example.backendsaleswebsite.model.Account;
 import com.example.backendsaleswebsite.service.AccountService;
 
@@ -40,6 +41,12 @@ public class AccountController {
         Optional<Account> account = accountService.getAccountById(id);
         return account.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @GetMapping("/myInfo")
+    public ResponseEntity<AccountResponse> getMyInfo() {
+        AccountResponse userResponse = accountService.getMyInfo();
+        return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/{id}")

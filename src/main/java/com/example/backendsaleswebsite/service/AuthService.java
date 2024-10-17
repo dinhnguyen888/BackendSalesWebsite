@@ -79,6 +79,9 @@ public class AuthService {
 				.issueTime(new Date())
 				.expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
 				.claim("scope", account.getRole())
+				.claim("userName", account.getUserName())
+				.claim("address", account.getAddress())
+				.claim("phoneNumber", account.getPhoneNumber())
 				.build();
 		
 		Payload payload = new Payload(jwtClaimsSet.toJSONObject());
