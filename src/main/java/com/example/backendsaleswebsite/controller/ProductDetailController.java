@@ -1,7 +1,7 @@
 package com.example.backendsaleswebsite.controller;
 
-import com.example.backendsaleswebsite.model.ProductDetail;
 import com.example.backendsaleswebsite.service.ProductDetailService;
+import com.example.backendsaleswebsite.dto.ProductDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,29 +17,29 @@ public class ProductDetailController {
 
     // Tạo mới ProductDetail
     @PostMapping
-    public ResponseEntity<ProductDetail> createProductDetail(@RequestBody ProductDetail productDetail) {
-        ProductDetail createdProductDetail = productDetailService.createProductDetail(productDetail);
+    public ResponseEntity<ProductDetailDTO> createProductDetail(@RequestBody ProductDetailDTO productDetailDTO) {
+        ProductDetailDTO createdProductDetail = productDetailService.createProductDetail(productDetailDTO);
         return ResponseEntity.ok(createdProductDetail);
     }
 
     // Lấy tất cả ProductDetail
     @GetMapping
-    public ResponseEntity<List<ProductDetail>> getAllProductDetails() {
-        List<ProductDetail> productDetails = productDetailService.getAllProductDetails();
+    public ResponseEntity<List<ProductDetailDTO>> getAllProductDetails() {
+        List<ProductDetailDTO> productDetails = productDetailService.getAllProductDetails();
         return ResponseEntity.ok(productDetails);
     }
 
     // Lấy ProductDetail theo ID
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDetail> getProductDetailById(@PathVariable Long id) {
-        ProductDetail productDetail = productDetailService.getProductDetailById(id);
+    public ResponseEntity<ProductDetailDTO> getProductDetailById(@PathVariable Long id) {
+        ProductDetailDTO productDetail = productDetailService.getProductDetailById(id);
         return ResponseEntity.ok(productDetail);
     }
 
     // Cập nhật ProductDetail
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDetail> updateProductDetail(@PathVariable Long id, @RequestBody ProductDetail productDetailDetails) {
-        ProductDetail updatedProductDetail = productDetailService.updateProductDetail(id, productDetailDetails);
+    public ResponseEntity<ProductDetailDTO> updateProductDetail(@PathVariable Long id, @RequestBody ProductDetailDTO productDetailDTO) {
+        ProductDetailDTO updatedProductDetail = productDetailService.updateProductDetail(id, productDetailDTO);
         return ResponseEntity.ok(updatedProductDetail);
     }
 
