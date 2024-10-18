@@ -1,5 +1,6 @@
 package com.example.backendsaleswebsite.service;
 
+import com.example.backendsaleswebsite.dto.InventoryDTO;
 import com.example.backendsaleswebsite.model.Inventory;
 import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.repository.InventoryRepository;
@@ -7,56 +8,75 @@ import com.example.backendsaleswebsite.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.backendsaleswebsite.dto.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryService {
-    
+
     @Autowired
     private InventoryRepository inventoryRepository;
+    
     @Autowired
     private ProductRepository productRepository;
 
     // Tạo mới Inventory
-    public Inventory createInventory(InventoryResponse request) {
+    public InventoryDTO createInventory(InventoryDTO request) {
         // Tìm kiếm sản phẩm theo productId
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Tạo đối tượng Inventory mới với product và productQuantity
-        Inventory inventory = Inventory.builder()
-                .product(product) // Chỉ gán đối tượng Product từ productId
-                .productQuantity(request.getProductQuantity())
-                .build();
+        // Chuyển đổi InventoryDTO sang Inventory
+        Inventory inventory = mapToEntity(request);
+        inventory.setProduct(product); // Gán đối tượng Product từ productId
 
-        return inventoryRepository.save(inventory);
+        inventory = inventoryRepository.save(inventory);
+        return mapToDTO(inventory);
     }
 
-
     // Lấy tất cả Inventory
-    public List<Inventory> getAllInventories() {
-        return inventoryRepository.findAll();
+    public List<InventoryDTO> getAllInventories() {
+        return inventoryRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     // Lấy Inventory theo ID
-    public Inventory getInventoryById(Long id) {
-        return inventoryRepository.findById(id)
+    public InventoryDTO getInventoryById(Long id) {
+        Inventory inventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Inventory not found"));
+        return mapToDTO(inventory);
     }
 
     // Cập nhật Inventory
-    public Inventory updateInventory(Long id, Inventory inventoryDetails) {
-        Inventory inventory = getInventoryById(id);
-        inventory.setProduct(inventoryDetails.getProduct());
+    public InventoryDTO updateInventory(Long id, InventoryDTO inventoryDetails) {
+        Inventory inventory = mapToEntity(getInventoryById(id));
         inventory.setProductQuantity(inventoryDetails.getProductQuantity());
-        return inventoryRepository.save(inventory);
+        inventory = inventoryRepository.save(inventory);
+        return mapToDTO(inventory);
     }
 
     // Xóa Inventory
     public void deleteInventory(Long id) {
-        Inventory inventory = getInventoryById(id);
+        Inventory inventory = mapToEntity(getInventoryById(id));
         inventoryRepository.delete(inventory);
+    }
+
+    // Phương thức chuyển đổi từ Entity sang DTO
+    private InventoryDTO mapToDTO(Inventory inventory) {
+        return new InventoryDTO(
+                inventory.getInventoryId(),
+                inventory.getProduct().getProductId(), // Lấy productId từ product
+                inventory.getProductQuantity()
+        );
+    }
+
+    // Phương thức chuyển đổi từ DTO sang Entity
+    private Inventory mapToEntity(InventoryDTO inventoryDTO) {
+        Inventory inventory = new Inventory();
+        inventory.setInventoryId(inventoryDTO.getInventoryId()); // Gán ID nếu có
+        inventory.setProductQuantity(inventoryDTO.getProductQuantity());
+        return inventory;
     }
 }
