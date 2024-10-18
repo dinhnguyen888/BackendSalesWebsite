@@ -1,7 +1,22 @@
 package com.example.backendsaleswebsite.model;
 
-import jakarta.persistence.*;
+import com.example.backendsaleswebsite.model.Account.Role;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PUBLIC)
 @Entity
 public class Product {
 
@@ -14,54 +29,14 @@ public class Product {
 
     @Column(nullable = true)
     private String manufacturer;
+    
+    @Column(nullable = true)
+    private String productDescription;
 
     @Column(nullable = true)
     private Long cost;
 
-    // Sửa lại để có quan hệ ManyToOne với Category
     @ManyToOne
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
     private Category category;
-
-    // Getters and Setters
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public Long getCost() {
-        return cost;
-    }
-
-    public void setCost(Long cost) {
-        this.cost = cost;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 }
