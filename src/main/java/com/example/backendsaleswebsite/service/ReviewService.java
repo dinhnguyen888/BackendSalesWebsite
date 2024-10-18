@@ -1,11 +1,13 @@
 package com.example.backendsaleswebsite.service;
 
+import com.example.backendsaleswebsite.dto.ReviewDTO;
 import com.example.backendsaleswebsite.model.Review;
 import com.example.backendsaleswebsite.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -14,34 +16,61 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     // Tạo mới Review
-    public Review createReview(Review review) {
-        return reviewRepository.save(review);
+    public ReviewDTO createReview(ReviewDTO reviewDTO) {
+        Review review = mapToEntity(reviewDTO);
+        review = reviewRepository.save(review);
+        return mapToDTO(review);
     }
 
     // Lấy tất cả Review
-    public List<Review> getAllReviews() {
-        return reviewRepository.findAll();
+    public List<ReviewDTO> getAllReviews() {
+        return reviewRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     // Lấy Review theo ID
-    public Review getReviewById(Long id) {
-        return reviewRepository.findById(id)
+    public ReviewDTO getReviewById(Long id) {
+        Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
+        return mapToDTO(review); // Chuyển đổi từ Review sang ReviewDTO
     }
 
+
+
     // Cập nhật Review
-    public Review updateReview(Long id, Review reviewDetails) {
-        Review review = getReviewById(id);
-        review.setReviewComment(reviewDetails.getReviewComment());
-        review.setReviewStar(reviewDetails.getReviewStar());
-        review.setAccount(reviewDetails.getAccount());
-        review.setProduct(reviewDetails.getProduct());
-        return reviewRepository.save(review);
+    public ReviewDTO updateReview(Long id, ReviewDTO reviewDTO) {
+        Review review = mapToEntity(getReviewById(id));
+        review.setReviewComment(reviewDTO.getReviewComment());
+        review.setReviewStar(reviewDTO.getReviewStar());
+        // Cập nhật Account và Product nếu cần
+        return mapToDTO(reviewRepository.save(review));
     }
 
     // Xóa Review
     public void deleteReview(Long id) {
-        Review review = getReviewById(id);
+        Review review = mapToEntity(getReviewById(id));
         reviewRepository.delete(review);
+    }
+
+    // Phương thức chuyển đổi từ DTO sang Entity
+    private Review mapToEntity(ReviewDTO reviewDTO) {
+        Review review = new Review();
+        review.setReviewId(reviewDTO.getReviewId());
+        review.setReviewComment(reviewDTO.getReviewComment());
+        review.setReviewStar(reviewDTO.getReviewStar());
+        // Thiết lập Account và Product nếu có thông tin
+        return review;
+    }
+
+    // Phương thức chuyển đổi từ Entity sang DTO
+    private ReviewDTO mapToDTO(Review review) {
+        return new ReviewDTO(
+                review.getReviewId(),
+                review.getAccount().getUserId(), // Lấy userId từ account
+                review.getProduct().getProductId(), // Lấy productId từ product
+                review.getReviewComment(),
+                review.getReviewStar()
+        );
     }
 }
