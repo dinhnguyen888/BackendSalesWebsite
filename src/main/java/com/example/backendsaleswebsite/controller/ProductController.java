@@ -1,6 +1,7 @@
 package com.example.backendsaleswebsite.controller;
 
 import com.example.backendsaleswebsite.model.Product;
+import com.example.backendsaleswebsite.dto.ProductDTO;
 import com.example.backendsaleswebsite.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,10 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    // Lấy danh sách tất cả sản phẩm
+ // Lấy danh sách tất cả sản phẩm
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
@@ -38,9 +39,10 @@ public class ProductController {
     }
 
     // Thêm sản phẩm mới
+ // Thêm sản phẩm mới
     @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product newProduct = productService.addProduct(product);
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
+        ProductDTO newProduct = productService.addProduct(productDTO);
         return ResponseEntity.ok(newProduct);
     }
 
@@ -51,10 +53,10 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    // Cập nhật sản phẩm theo ID
+ // Cập nhật sản phẩm theo ID
     @PutMapping("/update/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Product updatedProduct = productService.updateProduct(id, product);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.backendsaleswebsite.controller;
 
-import com.example.backendsaleswebsite.model.Review;
+import com.example.backendsaleswebsite.dto.ReviewDTO;
 import com.example.backendsaleswebsite.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,29 +17,29 @@ public class ReviewController {
 
     // Tạo mới Review
     @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        Review createdReview = reviewService.createReview(review);
+    public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewDTO reviewDTO) {
+        ReviewDTO createdReview = reviewService.createReview(reviewDTO);
         return ResponseEntity.ok(createdReview);
     }
 
     // Lấy tất cả Review
     @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews() {
-        List<Review> reviews = reviewService.getAllReviews();
+    public ResponseEntity<List<ReviewDTO>> getAllReviews() {
+        List<ReviewDTO> reviews = reviewService.getAllReviews();
         return ResponseEntity.ok(reviews);
     }
 
     // Lấy Review theo ID
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
-        Review review = reviewService.getReviewById(id);
+    public ResponseEntity<ReviewDTO> getReviewById(@PathVariable Long id) {
+        ReviewDTO review = reviewService.getReviewById(id);
         return ResponseEntity.ok(review);
     }
 
     // Cập nhật Review
     @PutMapping("/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewDetails) {
-        Review updatedReview = reviewService.updateReview(id, reviewDetails);
+    public ResponseEntity<ReviewDTO> updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO) {
+        ReviewDTO updatedReview = reviewService.updateReview(id, reviewDTO);
         return ResponseEntity.ok(updatedReview);
     }
 
