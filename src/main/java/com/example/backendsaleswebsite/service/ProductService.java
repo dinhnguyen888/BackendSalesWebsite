@@ -7,15 +7,18 @@ import com.example.backendsaleswebsite.dto.ProductDTO;
 import com.example.backendsaleswebsite.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class ProductService {
+
     @Autowired
     private ProductRepository productRepository;
     
@@ -30,27 +33,35 @@ public class ProductService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-    
-    
-    //Phân trang cho product
+
+    // Phân trang cho product
+
     public Page<Product> getProductsByCategory(String categoryName, int page, int limit) {
         Pageable pageable = PageRequest.of(page, limit);
         return productRepository.findByCategoryName(categoryName, pageable);
     }
-    
+
     // Thêm sản phẩm mới
+
     public ProductDTO addProduct(ProductDTO productDTO) {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found with id " + productDTO.getCategoryId()));
         Product product = toEntity(productDTO, category);
         Product savedProduct = productRepository.save(product);
         return toDTO(savedProduct);
+
+
+    // Lấy sản phẩm theo ID
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id " + productId));
     }
 
     // Xóa sản phẩm theo ID
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
+
     // Cập nhật thông tin sản phẩm
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(productId)
