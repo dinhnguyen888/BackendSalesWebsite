@@ -14,5 +14,5 @@ public class ProductDTO {
     private String productDescription;
     private Long cost;
     private Long categoryId;
-    private String categoryName; // Optional: nếu muốn lấy thêm thông tin về tên category
+   
 }

@@ -49,6 +49,7 @@ public class ProductService {
         Product product = toEntity(productDTO, category);
         Product savedProduct = productRepository.save(product);
         return toDTO(savedProduct);
+    }
 
 
     // Lấy sản phẩm theo ID
@@ -88,8 +89,7 @@ public class ProductService {
                 product.getManufacturer(),
                 product.getProductDescription(),
                 product.getCost(),
-                product.getCategory().getCategoryId(),
-                product.getCategory().getCategoryName()
+                product.getCategory().getCategoryId()
         );
     }
     
