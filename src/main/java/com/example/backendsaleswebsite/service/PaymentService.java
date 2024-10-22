@@ -50,4 +50,21 @@ public class PaymentService {
 
         return paymentRepository.save(payment);
     }
+    
+    public Payment updatePaymentStatus(Long orderId, String newStatus) {
+        if (!isValidPaymentStatus(newStatus)) {
+            throw new IllegalArgumentException("Trạng thái thanh toán không hợp lệ. Phải là 'đã trả' hoặc 'chưa trả'");
+        }
+
+        Payment payment = paymentRepository.findByOrderOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng này"));
+
+        payment.setPaymentStatus(newStatus);
+
+        return paymentRepository.save(payment);
+    }
+
+    private boolean isValidPaymentStatus(String status) {
+        return "đã trả".equals(status) || "chưa trả".equals(status);
+    }
 }

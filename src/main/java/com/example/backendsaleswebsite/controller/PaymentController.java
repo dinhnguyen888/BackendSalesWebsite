@@ -3,8 +3,11 @@ package com.example.backendsaleswebsite.controller;
 import com.example.backendsaleswebsite.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.backendsaleswebsite.dto.PaymentRequestDTO;
+import com.example.backendsaleswebsite.dto.PaymentResponseDTO;
+import com.example.backendsaleswebsite.model.Payment;
 import com.example.backendsaleswebsite.dto.DeliveryRequestDTO;
 
 import java.time.LocalDate;
@@ -81,5 +84,24 @@ public class PaymentController {
         response.put("paymentStatus", paymentStatus == 1 ? "Thành công" : "Thất bại");
         response.put("transactionId", transactionId);
         return response;
+    }
+    
+    @PutMapping("/update-status/{orderId}")
+    public ResponseEntity<PaymentResponseDTO> updatePaymentStatus(
+            @PathVariable Long orderId,
+            @RequestParam String newStatus) {
+
+        // Gọi service để cập nhật trạng thái thanh toán
+        Payment updatedPayment = paymentService.updatePaymentStatus(orderId, newStatus);
+
+        // Tạo DTO để trả về thông tin thanh toán đã được cập nhật
+        PaymentResponseDTO responseDTO = new PaymentResponseDTO();
+        responseDTO.setOrderId(updatedPayment.getOrder().getOrderId());
+        responseDTO.setPaymentDate(updatedPayment.getPaymentDate());
+        responseDTO.setPaymentAmount(updatedPayment.getPaymentAmount());
+        responseDTO.setPaymentStatus(updatedPayment.getPaymentStatus());
+
+        // Trả về HTTP status OK với thông tin thanh toán đã được cập nhật
+        return ResponseEntity.ok(responseDTO);
     }
 }
