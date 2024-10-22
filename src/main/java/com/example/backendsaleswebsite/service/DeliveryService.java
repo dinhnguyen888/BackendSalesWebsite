@@ -47,4 +47,23 @@ public class DeliveryService {
 
         return deliveryRepository.save(delivery);
     }
+    
+    public Delivery updateDeliveryState(Long orderId, String newState) {
+    	if (!isValidPaymentState(newState)) {
+            throw new IllegalArgumentException("Trạng thái giao hàng không hợp lệ. Phải là 'chưa giao', 'đang giao' hoặc 'đã giao'");
+        }
+    	
+    	Delivery delivery = deliveryRepository.findByOrderOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng này"));
+
+        // Cập nhật trạng thái mới
+        delivery.setDeliveryState(newState);
+
+        // Lưu lại sự thay đổi
+        return deliveryRepository.save(delivery);
+    }
+    
+    private boolean isValidPaymentState(String status) {
+        return "chưa giao".equals(status) || "đang giao".equals(status) || "đã giao".equals(status);
+    }
 }

@@ -40,21 +40,21 @@ public class ProductController {
 
     // Thêm sản phẩm mới
  // Thêm sản phẩm mới
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
         ProductDTO newProduct = productService.addProduct(productDTO);
         return ResponseEntity.ok(newProduct);
     }
 
     // Xóa sản phẩm theo ID
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 
  // Cập nhật sản phẩm theo ID
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
