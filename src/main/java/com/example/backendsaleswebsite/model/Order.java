@@ -42,6 +42,12 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "voucherId", nullable = true)
     private Voucher voucher;
+    
+    @Column(name = "orderQuantity", nullable = false)
+    private Long orderQuantity;
+    
+    @Column(name = "deliveryAddress", nullable = false)
+    private String deliveryAddress;
 
     @Column(name = "totalCost", nullable = false)
     private Long totalCost;

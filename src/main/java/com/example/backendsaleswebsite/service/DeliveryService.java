@@ -66,4 +66,9 @@ public class DeliveryService {
     private boolean isValidPaymentState(String status) {
         return "chưa giao".equals(status) || "đang giao".equals(status) || "đã giao".equals(status);
     }
+    
+    public Optional<String> getDeliveryStateByOrderId(Long orderId) {
+        return deliveryRepository.findByOrderOrderId(orderId)
+                .map(Delivery::getDeliveryState);
+    }
 }

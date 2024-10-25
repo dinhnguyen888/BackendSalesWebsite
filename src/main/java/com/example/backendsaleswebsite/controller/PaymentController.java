@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,12 +30,12 @@ public class PaymentController {
         this.deliveryService = deliveryService;
     }
 
-    @GetMapping("/home") 
-    public Map<String, String> home() {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Welcome to VNPay Demo API");
-        return response;
-    }
+//    @GetMapping("/home") 
+//    public Map<String, String> home() {
+//        Map<String, String> response = new HashMap<>();
+//        response.put("message", "Welcome to VNPay Demo API");
+//        return response;
+//    }
 
     @PostMapping("/submitOrder")
     public Map<String, String> submitOrder(@RequestParam("amount") int orderTotal,
@@ -100,8 +101,21 @@ public class PaymentController {
         responseDTO.setPaymentDate(updatedPayment.getPaymentDate());
         responseDTO.setPaymentAmount(updatedPayment.getPaymentAmount());
         responseDTO.setPaymentStatus(updatedPayment.getPaymentStatus());
-
+        
         // Trả về HTTP status OK với thông tin thanh toán đã được cập nhật
         return ResponseEntity.ok(responseDTO);
+    }
+    
+    @GetMapping("/all")
+    public ResponseEntity<List<PaymentRequestDTO>> getAllPayments() {
+        List<PaymentRequestDTO> payments = paymentService.getAllPayments();
+        return ResponseEntity.ok(payments);
+    }
+
+    // Endpoint để xóa thanh toán theo Order ID
+    @DeleteMapping("/delete/{orderId}")
+    public ResponseEntity<String> deletePaymentByOrderId(@PathVariable Long orderId) {
+        paymentService.deletePaymentByOrderId(orderId);
+        return ResponseEntity.ok("Thanh toán đã được xóa thành công");
     }
 }

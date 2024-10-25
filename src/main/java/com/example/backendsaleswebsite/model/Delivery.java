@@ -28,4 +28,5 @@ public class Delivery {
 
     @Column(nullable = false)
     private Date deliveryDate; // delivery_date
+    
 }

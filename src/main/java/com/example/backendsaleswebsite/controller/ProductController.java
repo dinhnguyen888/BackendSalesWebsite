@@ -2,6 +2,7 @@ package com.example.backendsaleswebsite.controller;
 
 import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.dto.ProductDTO;
+import com.example.backendsaleswebsite.dto.ProductResponseDTO;
 import com.example.backendsaleswebsite.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class ProductController {
 
  // Lấy danh sách tất cả sản phẩm
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<ProductDTO> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+        List<ProductResponseDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 

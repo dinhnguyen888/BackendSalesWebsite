@@ -6,7 +6,10 @@ import com.example.backendsaleswebsite.model.Payment;
 import com.example.backendsaleswebsite.repository.OrderRepository;
 import com.example.backendsaleswebsite.repository.PaymentRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,4 +70,39 @@ public class PaymentService {
     private boolean isValidPaymentStatus(String status) {
         return "đã trả".equals(status) || "chưa trả".equals(status);
     }
+    
+    // Thêm phương thức deletePaymentByOrderId
+    public void deletePaymentByOrderId(Long orderId) {
+        Payment payment = paymentRepository.findByOrderOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng này"));
+
+        paymentRepository.delete(payment);
+    }
+
+    // Thêm phương thức getAllPayments
+    public List<PaymentRequestDTO> getAllPayments() {
+        Iterable<Payment> payments = paymentRepository.findAll(); // CrudRepository trả về Iterable
+
+        // Chuyển Iterable sang List
+        List<Payment> paymentList = StreamSupport
+                .stream(payments.spliterator(), false)
+                .collect(Collectors.toList());
+
+        return paymentList.stream()
+                .map(payment -> {
+                    PaymentRequestDTO dto = new PaymentRequestDTO();
+                    dto.setOrderId(payment.getOrder().getOrderId());
+                    dto.setPaymentDate(payment.getPaymentDate());
+                    dto.setPaymentAmount(payment.getPaymentAmount());
+                    dto.setPaymentStatus(payment.getPaymentStatus());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+    
+    public Optional<String> getPaymentStatusByOrderId(Long orderId) {
+        return paymentRepository.findByOrderOrderId(orderId)
+                .map(Payment::getPaymentStatus);
+    }
+
 }

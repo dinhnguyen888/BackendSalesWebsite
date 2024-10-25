@@ -1,8 +1,11 @@
 package com.example.backendsaleswebsite.controller;
 
 import com.example.backendsaleswebsite.dto.DeliveryRequestDTO;
+import com.example.backendsaleswebsite.dto.OrderDetailsDTO;
+import com.example.backendsaleswebsite.repository.*;
 import com.example.backendsaleswebsite.dto.OrderRequestDTO;
 import com.example.backendsaleswebsite.dto.PaymentRequestDTO;
+import com.example.backendsaleswebsite.service.AccountService;
 import com.example.backendsaleswebsite.service.DeliveryService;
 import com.example.backendsaleswebsite.service.OrderService;
 import com.example.backendsaleswebsite.service.PaymentService;
@@ -11,13 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.backendsaleswebsite.repository.AccountRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import com.example.backendsaleswebsite.model.*;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -32,11 +36,18 @@ public class OrderController {
 
     @Autowired
     private DeliveryService deliveryService; // Inject DeliveryService
+
+    @Autowired
+    private AccountRepository accountRepository; // Inject AccountRepository
+
+    @Autowired
+    private AccountService accountService; 
     
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
+    
     @PostMapping
     public ResponseEntity<Map<String, String>> createOrder(@RequestBody OrderRequestDTO orderRequestDTO, 
                                                            HttpServletRequest request) {
@@ -45,7 +56,8 @@ public class OrderController {
 
         // Khởi tạo đối tượng trả về
         Map<String, String> response = new HashMap<>();
-
+        Account account = accountRepository.findById(orderRequestDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại"));
         
         if ("chuyển khoản".equalsIgnoreCase(orderRequestDTO.getPaymentMethod())) {
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
@@ -67,7 +79,7 @@ public class OrderController {
             deliveryRequestDTO.setOrderId(createdOrder.getOrderId());
             deliveryRequestDTO.setDeliveryState("chưa giao");
             deliveryRequestDTO.setDeliveryDate(Date.valueOf(LocalDate.now())); 
-
+            
             // Lưu Delivery vào database
             deliveryService.createDelivery(deliveryRequestDTO);
 
@@ -107,5 +119,26 @@ public class OrderController {
         // Trả về phản hồi (ResponseEntity) với dữ liệu phản hồi và HTTP status OK (200)
         return ResponseEntity.ok(response);
     }
+    
+    
+    @GetMapping
+    public ResponseEntity<List<OrderDetailsDTO>> getAllOrders() {
+        List<OrderDetailsDTO> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDetailsDTO> getOrderById(@PathVariable Long orderId) {
+        OrderDetailsDTO order = orderService.getOrderById(orderId);
+        return ResponseEntity.ok(order);
+    }
+
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @RequestBody OrderRequestDTO orderRequestDTO) {
+        Order updatedOrder = orderService.updateOrder(orderId, orderRequestDTO);
+        return ResponseEntity.ok(updatedOrder);
+    }
+
 
 }

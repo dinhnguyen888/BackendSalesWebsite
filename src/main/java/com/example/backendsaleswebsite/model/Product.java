@@ -27,14 +27,20 @@ public class Product {
     @Column(nullable = true)
     private String productName;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String manufacturer;
     
     @Column(nullable = true)
     private String productDescription;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Long cost;
+    
+    @Column(nullable = true)
+    private String productImage;
+    
+    @Column(nullable = false)
+    private Long productQuantity;
 
     @ManyToOne
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")

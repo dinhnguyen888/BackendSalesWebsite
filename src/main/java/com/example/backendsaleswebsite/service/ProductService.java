@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import com.example.backendsaleswebsite.dto.ProductResponseDTO;
 @Service
 public class ProductService {
 
@@ -27,13 +27,12 @@ public class ProductService {
 
 
     // Phương thức để lấy danh sách tất cả sản phẩm
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductResponseDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(this::toDTO)
+                .map(this::toDTOResponse)
                 .collect(Collectors.toList());
     }
-
     // Phân trang cho product
 
     public Page<Product> getProductsByCategory(String categoryName, int page, int limit) {
@@ -75,6 +74,8 @@ public class ProductService {
         existingProduct.setManufacturer(productDTO.getManufacturer());
         existingProduct.setProductDescription(productDTO.getProductDescription());
         existingProduct.setCost(productDTO.getCost());
+        existingProduct.setProductImage(productDTO.getProductImage());
+        existingProduct.setProductQuantity(productDTO.getProductQuantity());
         existingProduct.setCategory(category);
 
         Product updatedProduct = productRepository.save(existingProduct);
@@ -89,7 +90,10 @@ public class ProductService {
                 product.getManufacturer(),
                 product.getProductDescription(),
                 product.getCost(),
-                product.getCategory().getCategoryId()
+                product.getCategory().getCategoryId(),
+                product.getProductImage(),
+                product.getProductQuantity()
+     
         );
     }
     
@@ -101,8 +105,24 @@ public class ProductService {
                 dto.getManufacturer(),
                 dto.getProductDescription(),
                 dto.getCost(),
+                dto.getProductImage(),
+                dto.getProductQuantity(),
                 category
+               
         );
     }
 
+    private ProductResponseDTO toDTOResponse(Product product) {
+        return new ProductResponseDTO(
+                product.getProductId(),
+                product.getProductName(),
+                product.getManufacturer(),
+                product.getProductDescription(),
+                product.getCost(),
+                product.getProductImage(),
+                product.getProductQuantity(),
+                product.getCategory().getCategoryName(),
+                product.getCategory().getCategoryId()
+        );
+    }
 }
