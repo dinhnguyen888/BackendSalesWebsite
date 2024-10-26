@@ -60,4 +60,31 @@ public class ProductController {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
+    @GetMapping("/searchByName")
+    public ResponseEntity<Page<ProductResponseDTO>> searchProductsByName(
+            @RequestParam String name,
+            @RequestParam int page,
+            @RequestParam int limit
+    ) {
+        if (page > 0) {
+            page = page - 1; // Chuyển page từ 1 thành 0 (Spring Data JPA sử dụng index 0-based)
+        }
+        Page<ProductResponseDTO> products = productService.searchProductsByName(name, page, limit);
+        return ResponseEntity.ok(products);
+    }
+
+    // Tìm kiếm sản phẩm theo hãng
+    @GetMapping("/searchByManufacturer")
+    public ResponseEntity<Page<ProductResponseDTO>> searchProductsByManufacturer(
+            @RequestParam String manufacturer,
+            @RequestParam int page,
+            @RequestParam int limit
+    ) {
+        if (page > 0) {
+            page = page - 1; // Chuyển page từ 1 thành 0 (Spring Data JPA sử dụng index 0-based)
+        }
+        Page<ProductResponseDTO> products = productService.searchProductsByManufacturer(manufacturer, page, limit);
+        return ResponseEntity.ok(products);
+    }
+    
 }

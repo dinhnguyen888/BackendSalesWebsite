@@ -125,4 +125,17 @@ public class ProductService {
                 product.getCategory().getCategoryId()
         );
     }
+    
+    public Page<ProductResponseDTO> searchProductsByName(String productName, int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return productRepository.findByProductNameContainingIgnoreCase(productName, pageable)
+                .map(this::toDTOResponse);
+    }
+
+    // Tìm kiếm sản phẩm theo hãng
+    public Page<ProductResponseDTO> searchProductsByManufacturer(String manufacturer, int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return productRepository.findByManufacturerContainingIgnoreCase(manufacturer, pageable)
+                .map(this::toDTOResponse);
+    }
 }
