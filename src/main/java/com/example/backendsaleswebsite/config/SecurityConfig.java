@@ -37,7 +37,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class SecurityConfig {
 
 	private final String[] END_POINT = {"/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**",
-										"/auth/**", "/categories/**", "/vnpay-payment", "/submitOrder" , "/api/orders"};
+										"/auth/**", "/categories/**", "/vnpay-payment", "/submitOrder" , "/api/orders", "/api/products/pages", "/api/products/searchByName", "/api/products/searchByManufacturer"};
 
 
 	private String SIGNER_KEY = "GaHQG6SjkCOQBF5yspA4Bd+t1EGA1gP+UP++0odDou9MUNdArwKwCX1kmqtSlEhQ";
