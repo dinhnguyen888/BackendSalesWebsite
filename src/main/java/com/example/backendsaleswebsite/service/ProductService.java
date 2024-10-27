@@ -51,11 +51,13 @@ public class ProductService {
     }
 
 
-    // Lấy sản phẩm theo ID
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId)
+ // Lấy sản phẩm theo ID và trả về ProductResponseDTO
+    public ProductResponseDTO getProductById(Long productId) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with id " + productId));
+        return toDTOResponse(product); // Chuyển Product thành ProductResponseDTO
     }
+
 
     // Xóa sản phẩm theo ID
     public void deleteProduct(Long productId) {
@@ -138,4 +140,6 @@ public class ProductService {
         return productRepository.findByManufacturerContainingIgnoreCase(manufacturer, pageable)
                 .map(this::toDTOResponse);
     }
+    
+    
 }

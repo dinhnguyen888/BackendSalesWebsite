@@ -46,6 +46,13 @@ public class ProductController {
         ProductDTO newProduct = productService.addProduct(productDTO);
         return ResponseEntity.ok(newProduct);
     }
+    
+ // Lấy sản phẩm theo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
+        ProductResponseDTO product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
+    }
 
     // Xóa sản phẩm theo ID
     @DeleteMapping("/{id}")
