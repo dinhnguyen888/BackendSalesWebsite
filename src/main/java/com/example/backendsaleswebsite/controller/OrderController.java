@@ -12,6 +12,7 @@ import com.example.backendsaleswebsite.service.PaymentService;
 import com.example.backendsaleswebsite.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.backendsaleswebsite.repository.AccountRepository;
@@ -140,5 +141,17 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
-
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<String> deleteOrder(
+            @PathVariable Long orderId,
+            @RequestParam String status) {
+        
+        String result = orderService.deleteOrderIfPending(orderId, status);
+        
+        if (result.contains("successfully deleted")) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
+    }
 }
