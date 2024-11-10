@@ -39,7 +39,6 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         
         long totalCost = product.getCost() * quantity;
-        
         Cart cart = Cart.builder()
                 .account(account)
                 .product(product)
