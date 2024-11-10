@@ -52,8 +52,19 @@ public class CartService {
 
 
     public void removeFromCart(Long cartId) {
-        cartRepository.deleteById(cartId);
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        
+        if (optionalCart.isPresent()) {
+            Cart cart = optionalCart.get();
+            cart.setProduct(null); 
+            cart.setAccount(null); 
+            cart.setQuantity(0); 
+
+            cartRepository.save(cart); 
+            cartRepository.deleteById(cartId);
+        }
     }
+
 
     public Cart changeQuantity(Long cartId, int quantity) {
         Cart cart = cartRepository.findById(cartId)

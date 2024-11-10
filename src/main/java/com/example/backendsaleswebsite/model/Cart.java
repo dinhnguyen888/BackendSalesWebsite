@@ -18,11 +18,11 @@ public class Cart {
     private long cartId;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId", nullable = true)
     private Account account;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn(name = "productId", nullable = true)
     private Product product;
 
     @Column(nullable = false)
