@@ -7,9 +7,13 @@ import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.model.Account;
 import com.example.backendsaleswebsite.model.Voucher;
 import com.example.backendsaleswebsite.repository.OrderRepository;
+import com.example.backendsaleswebsite.repository.PaymentRepository;
 import com.example.backendsaleswebsite.repository.ProductRepository;
 import com.example.backendsaleswebsite.repository.AccountRepository;
+import com.example.backendsaleswebsite.repository.DeliveryRepository;
 import com.example.backendsaleswebsite.repository.VoucherRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +46,12 @@ public class OrderService {
         this.deliveryService = deliveryService; // Gán giá trị
         this.paymentService = paymentService; // Gán giá trị
     }
+    
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+    
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Transactional
     public OrderRequestDTO createOrder(OrderRequestDTO orderRequestDTO) {
@@ -157,6 +167,17 @@ dto.setDeliveryStatus(deliveryService.getDeliveryStateByOrderId(order.getOrderId
         
         return dto;
     }
+    
+    @Transactional
+    public String deleteOrderIfPending(Long orderId, String status) {
+        if (!"Đang chờ".equals(status)) {
+            return "Order cannot be deleted because the provided status is not 'Đang chờ'.";
+        }
 
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
 
+        orderRepository.delete(order);
+        return "Order with id " + orderId + " has been successfully deleted.";
+    }
 }
