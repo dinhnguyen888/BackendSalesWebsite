@@ -58,7 +58,6 @@ public class CartService {
             cart.setProduct(null); 
             cart.setAccount(null); 
             cart.setQuantity(0); 
-
             cartRepository.save(cart); 
             cartRepository.deleteById(cartId);
         }
