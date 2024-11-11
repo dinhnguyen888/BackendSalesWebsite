@@ -56,9 +56,9 @@ public class ProductController {
 
     // Xóa sản phẩm theo ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Xóa thành công");
     }
 
  // Cập nhật sản phẩm theo ID

@@ -3,11 +3,19 @@ package com.example.backendsaleswebsite.service;
 import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.repository.ProductRepository;
 import com.example.backendsaleswebsite.repository.CategoryRepository;
+import com.example.backendsaleswebsite.repository.DeliveryRepository;
+import com.example.backendsaleswebsite.repository.OrderRepository;
 import com.example.backendsaleswebsite.dto.ProductDTO;
 import com.example.backendsaleswebsite.model.Category;
+import com.example.backendsaleswebsite.model.Delivery;
+import com.example.backendsaleswebsite.model.Order;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +32,12 @@ public class ProductService {
     
     @Autowired
     private CategoryRepository categoryRepository;
+    
+    @Autowired
+    private OrderRepository orderRepository;
+    
+    @Autowired
+    private DeliveryRepository deliveryRepository;
 
 
     // Phương thức để lấy danh sách tất cả sản phẩm
@@ -59,10 +73,27 @@ public class ProductService {
     }
 
 
-    // Xóa sản phẩm theo ID
     public void deleteProduct(Long productId) {
+        List<Order> orders = orderRepository.findByProductProductId(productId); // Tìm tất cả các Order có productId tương ứng
+        List<Order> ordersToDelete = new ArrayList<>();
+
+        for (Order order : orders) {
+            Optional<Delivery> deliveryOpt = deliveryRepository.findByOrderOrderId(order.getOrderId());
+            if (deliveryOpt.isPresent() && "đã giao".equals(deliveryOpt.get().getDeliveryState())) {
+                ordersToDelete.add(order); // Thêm Order vào danh sách cần xóa nếu đã giao
+            } else if (deliveryOpt.isEmpty() || !"đã giao".equals(deliveryOpt.get().getDeliveryState())) {
+                throw new IllegalStateException("Sản phẩm không thể xóa vì có đơn hàng chưa giao xong.");
+            }
+        }
+
+        // Xóa tất cả các Order có trạng thái đã giao
+        orderRepository.deleteAll(ordersToDelete);
+
+        // Xóa sản phẩm nếu tất cả các đơn hàng liên quan đã được giao và xóa thành công
         productRepository.deleteById(productId);
     }
+
+
 
     // Cập nhật thông tin sản phẩm
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
