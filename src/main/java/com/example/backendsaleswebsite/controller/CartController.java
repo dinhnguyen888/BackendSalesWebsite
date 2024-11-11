@@ -20,7 +20,7 @@ public class CartController {
     public List<Cart> getCartsByUserId(@PathVariable Long userId) {
         return cartService.getCartsByUserId(userId);
     }
-
+    
 
     @PostMapping("/add")
     public CartResponse addToCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam int quantity) {
