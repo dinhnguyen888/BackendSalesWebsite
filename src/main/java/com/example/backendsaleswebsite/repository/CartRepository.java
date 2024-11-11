@@ -9,4 +9,3 @@ import com.example.backendsaleswebsite.model.Cart;
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByAccount_userId(Long accountId);
 }
-}
