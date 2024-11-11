@@ -10,6 +10,7 @@ import com.example.backendsaleswebsite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,11 +26,9 @@ public class CartService {
     private AccountRepository accountRepository;
     
     
-    public Cart getCartByUserId(Long userId) {
-        return cartRepository.findByAccount_userId(userId)
-                .orElseThrow(() -> new RuntimeException("Cart not found for userId: " + userId));
+    public List<Cart> getCartsByUserId(Long userId) {
+        return cartRepository.findByAccount_userId(userId);
     }
-
 
     public CartResponse addToCart(Long userId, Long productId, int quantity) {
         Account account = accountRepository.findById(userId)

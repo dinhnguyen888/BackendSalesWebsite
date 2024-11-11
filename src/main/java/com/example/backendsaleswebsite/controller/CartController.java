@@ -3,6 +3,9 @@ package com.example.backendsaleswebsite.controller;
 import com.example.backendsaleswebsite.dto.CartResponse;
 import com.example.backendsaleswebsite.model.Cart;
 import com.example.backendsaleswebsite.service.CartService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +17,10 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/{userId}")
-    public Cart getCartById(@PathVariable Long userId) {
-        return cartService.getCartByUserId(userId);
+    public List<Cart> getCartsByUserId(@PathVariable Long userId) {
+        return cartService.getCartsByUserId(userId);
     }
+
 
     @PostMapping("/add")
     public CartResponse addToCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam int quantity) {
