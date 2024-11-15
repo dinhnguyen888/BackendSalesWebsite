@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -67,8 +69,9 @@ public class OrderService {
 
         // Kiểm tra và cập nhật số lượng sản phẩm
         if (product.getProductQuantity() < orderRequestDTO.getOrderQuantity()) {
-            throw new RuntimeException("Not enough product quantity to place the order.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough product quantity to place the order.");
         }
+
         product.setProductQuantity(product.getProductQuantity() - orderRequestDTO.getOrderQuantity());
         productRepository.save(product);
 
@@ -180,4 +183,6 @@ dto.setDeliveryStatus(deliveryService.getDeliveryStateByOrderId(order.getOrderId
         orderRepository.delete(order);
         return "Order with id " + orderId + " has been successfully deleted.";
     }
+    
+    
 }
