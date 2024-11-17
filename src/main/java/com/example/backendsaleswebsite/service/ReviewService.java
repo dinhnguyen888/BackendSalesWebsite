@@ -1,7 +1,11 @@
 package com.example.backendsaleswebsite.service;
 
 import com.example.backendsaleswebsite.dto.ReviewDTO;
+import com.example.backendsaleswebsite.model.Account;
+import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.model.Review;
+import com.example.backendsaleswebsite.repository.AccountRepository;
+import com.example.backendsaleswebsite.repository.ProductRepository;
 import com.example.backendsaleswebsite.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +19,42 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     // Tạo mới Review
     public ReviewDTO createReview(ReviewDTO reviewDTO) {
         Review review = mapToEntity(reviewDTO);
         review = reviewRepository.save(review);
         return mapToDTO(review);
     }
+
+    private Review mapToEntity(ReviewDTO reviewDTO) {
+        Review review = new Review();
+        // Không cần thiết lập reviewId, để JPA tự tăng
+        review.setReviewComment(reviewDTO.getReviewComment());
+        review.setReviewStar(reviewDTO.getReviewStar());
+
+        // Thiết lập Account từ userId
+        if (reviewDTO.getUserId() != null) {
+            Account account = accountRepository.findById(reviewDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+            review.setAccount(account);
+        }
+
+        // Thiết lập Product từ productId
+        if (reviewDTO.getProductId() != null) {
+            Product product = productRepository.findById(reviewDTO.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+            review.setProduct(product);
+        }
+
+        return review;
+    }
+
 
     // Lấy tất cả Review
     public List<ReviewDTO> getAllReviews() {
@@ -59,14 +93,14 @@ public class ReviewService {
     }
 
     // Phương thức chuyển đổi từ DTO sang Entity
-    private Review mapToEntity(ReviewDTO reviewDTO) {
-        Review review = new Review();
-        review.setReviewId(reviewDTO.getReviewId());
-        review.setReviewComment(reviewDTO.getReviewComment());
-        review.setReviewStar(reviewDTO.getReviewStar());
-        // Thiết lập Account và Product nếu có thông tin
-        return review;
-    }
+//    private Review mapToEntity(ReviewDTO reviewDTO) {
+//        Review review = new Review();
+//        review.setReviewId(reviewDTO.getReviewId());
+//        review.setReviewComment(reviewDTO.getReviewComment());
+//        review.setReviewStar(reviewDTO.getReviewStar());
+//        // Thiết lập Account và Product nếu có thông tin
+//        return review;
+//    }
 
     // Phương thức chuyển đổi từ Entity sang DTO
     private ReviewDTO mapToDTO(Review review) {

@@ -41,7 +41,7 @@ public class Review {
     private String reviewComment;
     
     @Column(nullable = false)
-    private String reviewStar;
+    private Long reviewStar;
     
 
 

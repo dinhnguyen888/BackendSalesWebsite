@@ -12,5 +12,5 @@ public class ReviewDTO {
     private Long userId; // Thay vì toàn bộ Account
     private Long productId; // Thay vì toàn bộ Product
     private String reviewComment;
-    private String reviewStar;
+    private Long reviewStar;
 }
