@@ -36,6 +36,11 @@ public class ReviewService {
         return mapToDTO(review); // Chuyển đổi từ Review sang ReviewDTO
     }
 
+    public List<ReviewDTO> getReviewsByProductId(Long productId) {
+        return reviewRepository.findByProduct_ProductId(productId).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
 
     // Cập nhật Review
