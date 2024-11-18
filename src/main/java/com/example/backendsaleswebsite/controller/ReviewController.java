@@ -1,6 +1,7 @@
 package com.example.backendsaleswebsite.controller;
 
 import com.example.backendsaleswebsite.dto.ReviewDTO;
+import com.example.backendsaleswebsite.dto.ReviewResponseDTO;
 import com.example.backendsaleswebsite.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,8 @@ public class ReviewController {
 
     // Lấy Review theo ID sản phẩm
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable Long productId) {
-        List<ReviewDTO> reviews = reviewService.getReviewsByProductId(productId);
+    public ResponseEntity<List<ReviewResponseDTO>> getReviewsByProductId(@PathVariable Long productId) {
+        List<ReviewResponseDTO> reviews = reviewService.getReviewsByProductId(productId);
         return ResponseEntity.ok(reviews);
     }
 

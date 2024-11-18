@@ -1,6 +1,7 @@
 package com.example.backendsaleswebsite.service;
 
 import com.example.backendsaleswebsite.dto.ReviewDTO;
+import com.example.backendsaleswebsite.dto.ReviewResponseDTO;
 import com.example.backendsaleswebsite.model.Account;
 import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.model.Review;
@@ -76,15 +77,17 @@ public class ReviewService {
     }
 
     // Lấy Review theo ID
-    public ReviewDTO getReviewById(Long id) {
-        Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Review not found"));
-        return mapToDTO(review);
-    }
+//    public ReviewDTO getReviewById(Long id) {
+//        Review review = reviewRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Review not found"));
+//        return mapToDTO(review);
+//    }
+    
+    
 
-    public List<ReviewDTO> getReviewsByProductId(Long productId) {
+    public List<ReviewResponseDTO> getReviewsByProductId(Long productId) {
         return reviewRepository.findByProduct_ProductId(productId).stream()
-                .map(this::mapToDTO)
+                .map(this::mapToDTOResponse)
                 .collect(Collectors.toList());
     }
 
@@ -119,4 +122,14 @@ public class ReviewService {
                 review.getReviewStar()
         );
     }
+    
+    private ReviewResponseDTO mapToDTOResponse(Review review) {
+        return ReviewResponseDTO.builder()
+                .reviewId(review.getReviewId())
+                .reviewComment(review.getReviewComment())
+                .reviewStar(review.getReviewStar())
+                .userName(review.getAccount().getUserName()) // Map userName
+                .build();
+    }
+
 }
