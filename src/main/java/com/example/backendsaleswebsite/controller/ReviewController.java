@@ -29,12 +29,13 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
-    // Lấy Review theo ID
-    @GetMapping("/{productId}")
+    // Lấy Review theo ID sản phẩm
+    @GetMapping("/product/{productId}")
     public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable Long productId) {
         List<ReviewDTO> reviews = reviewService.getReviewsByProductId(productId);
         return ResponseEntity.ok(reviews);
     }
+
     // Cập nhật Review
     @PutMapping("/{id}")
     public ResponseEntity<ReviewDTO> updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO) {
