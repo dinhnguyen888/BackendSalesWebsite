@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,7 +84,11 @@ public class ReviewService {
 //        return mapToDTO(review);
 //    }
     
-    
+    // Lấy Review theo userID
+    public Optional<ReviewResponseDTO> getReviewByUserId(Long userId) {
+        return reviewRepository.findByAccount_UserId(userId)
+                .map(this::mapToDTOResponse);
+    }
 
     public List<ReviewResponseDTO> getReviewsByProductId(Long productId) {
         return reviewRepository.findByProduct_ProductId(productId).stream()
