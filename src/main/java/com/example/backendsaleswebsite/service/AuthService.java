@@ -77,7 +77,7 @@ public class AuthService {
 				.subject(account.getEmail())
 				.issuer("4TNGears.com")
 				.issueTime(new Date())
-				.expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
+				.expirationTime(new Date(Instant.now().plus(10, ChronoUnit.HOURS).toEpochMilli()))
 				.claim("scope", account.getRole())
 				.claim("userName", account.getUserName())
 				.claim("address", account.getAddress())
