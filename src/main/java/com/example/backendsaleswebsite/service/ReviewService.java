@@ -71,9 +71,9 @@ public class ReviewService {
     }
 
     // Lấy tất cả Review
-    public List<ReviewDTO> getAllReviews() {
+    public List<ReviewResponseDTO> getAllReviews() {
         return reviewRepository.findAll().stream()
-                .map(this::mapToDTO)
+                .map(this::mapToDTOResponse)
                 .collect(Collectors.toList());
     }
 
