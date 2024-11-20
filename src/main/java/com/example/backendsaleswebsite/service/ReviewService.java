@@ -134,6 +134,8 @@ public class ReviewService {
                 .reviewComment(review.getReviewComment())
                 .reviewStar(review.getReviewStar())
                 .userName(review.getAccount().getUserName()) // Map userName
+                .userId(review.getAccount().getUserId())
+                .productId(review.getProduct().getProductId())
                 .build();
     }
 
