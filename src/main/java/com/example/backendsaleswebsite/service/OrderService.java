@@ -127,6 +127,22 @@ public class OrderService {
         
         return convertToOrderDetailsDTO(order);
     }
+    @Transactional
+    public List<OrderDetailsDTO> getOrderByUserId(Long userId) {
+        // Tìm tất cả đơn hàng của người dùng
+        List<Order> orders = orderRepository.findByAccountUserId(userId);
+
+        // Nếu không tìm thấy đơn hàng, có thể trả về danh sách trống hoặc báo lỗi
+        if (orders.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No orders found for user with id: " + userId);
+        }
+
+        // Chuyển đổi danh sách Order thành danh sách OrderDetailsDTO
+        return orders.stream()
+                .map(this::convertToOrderDetailsDTO)
+                .collect(Collectors.toList());
+    }
+
 
     @Transactional
     public List<OrderDetailsDTO> getAllOrders() {

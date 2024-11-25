@@ -167,4 +167,12 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
     }
+    
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<OrderDetailsDTO>> getOrdersByUserId(@PathVariable Long userId) {
+        // Lấy danh sách đơn hàng theo userId
+        List<OrderDetailsDTO> orders = orderService.getOrderByUserId(userId);
+        return ResponseEntity.ok(orders);
+    }
+
 }
