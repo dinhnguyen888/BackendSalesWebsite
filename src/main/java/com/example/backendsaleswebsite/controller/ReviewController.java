@@ -26,8 +26,8 @@ public class ReviewController {
 
     // Lấy tất cả Review
     @GetMapping
-    public ResponseEntity<List<ReviewDTO>> getAllReviews() {
-        List<ReviewDTO> reviews = reviewService.getAllReviews();
+    public ResponseEntity<List<ReviewResponseDTO>> getAllReviews() {
+        List<ReviewResponseDTO> reviews = reviewService.getAllReviews();
         return ResponseEntity.ok(reviews);
     }
 
