@@ -68,7 +68,7 @@ public class OrderController {
         
         if ("chuyển khoản".equalsIgnoreCase(orderRequestDTO.getPaymentMethod())) {
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-            String vnpayUrl = vnPayService.createOrder(createdOrder.getTotalCost().intValue(), 
+            String vnpayUrl = vnPayService.createOrder(createdOrder.getTotalCost().longValue(), 
                     createdOrder.getOrderId().toString(), baseUrl);
             
             response.put("redirectUrl", vnpayUrl);

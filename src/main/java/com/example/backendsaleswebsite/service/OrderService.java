@@ -143,7 +143,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-
+ 
     @Transactional
     public List<OrderDetailsDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
