@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.backendsaleswebsite.dto.DeliveryResponseDTO;
 import com.example.backendsaleswebsite.model.Delivery;
 import com.example.backendsaleswebsite.service.DeliveryService;
+import com.example.backendsaleswebsite.service.OrderNotificationService;
 
 @RestController
 @RequestMapping("/api/delivery")
 public class DeliveryController {
 	private final DeliveryService deliveryService;
 
+	 @Autowired
+	    private OrderNotificationService orderNotificationService;
+	 
     @Autowired
     public DeliveryController(DeliveryService deliveryService) {
         this.deliveryService = deliveryService;
@@ -29,13 +33,13 @@ public class DeliveryController {
             @RequestParam String newState) {
         
         Delivery updatedDelivery = deliveryService.updateDeliveryState(orderId, newState);
-
+        
         // Chuyển đổi đối tượng Delivery sang DTO để trả về
         DeliveryResponseDTO responseDTO = new DeliveryResponseDTO();
         responseDTO.setOrderId(updatedDelivery.getOrder().getOrderId());
         responseDTO.setDeliveryState(updatedDelivery.getDeliveryState());
         responseDTO.setDeliveryDate(updatedDelivery.getDeliveryDate());
-
+        orderNotificationService.notifystatus(orderId.toString(), newState);
         return ResponseEntity.ok(responseDTO);
     }
 }

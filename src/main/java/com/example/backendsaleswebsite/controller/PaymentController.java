@@ -7,7 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.backendsaleswebsite.dto.PaymentRequestDTO;
 import com.example.backendsaleswebsite.dto.PaymentResponseDTO;
+import com.example.backendsaleswebsite.model.Order;
 import com.example.backendsaleswebsite.model.Payment;
+import com.example.backendsaleswebsite.model.Product;
+import com.example.backendsaleswebsite.repository.OrderRepository;
+import com.example.backendsaleswebsite.repository.ProductRepository;
 import com.example.backendsaleswebsite.dto.DeliveryRequestDTO;
 
 import java.time.LocalDate;
@@ -25,6 +29,15 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final DeliveryService deliveryService;
 
+    @Autowired
+    private OrderNotificationService orderNotificationService;
+    
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+    
     public PaymentController(PaymentService paymentService, DeliveryService deliveryService) {
         this.paymentService = paymentService;
         this.deliveryService = deliveryService;
@@ -84,6 +97,16 @@ public class PaymentController {
         Map<String, Object> response = new HashMap<>();
         response.put("paymentStatus", paymentStatus == 1 ? "Thành công" : "Thất bại");
         response.put("transactionId", transactionId);
+        
+
+        Long orderId = Long.parseLong(orderInfo);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Đơn hàng không tồn tại"));
+        Product product = order.getProduct();
+        String productName = product.getProductName();
+        Long productQuantity = order.getOrderQuantity();
+        
+        orderNotificationService.notifyOrder(productName,productQuantity.toString());
         return response;
     }
     

@@ -7,6 +7,7 @@ import com.example.backendsaleswebsite.dto.OrderRequestDTO;
 import com.example.backendsaleswebsite.dto.PaymentRequestDTO;
 import com.example.backendsaleswebsite.service.AccountService;
 import com.example.backendsaleswebsite.service.DeliveryService;
+import com.example.backendsaleswebsite.service.OrderNotificationService;
 import com.example.backendsaleswebsite.service.OrderService;
 import com.example.backendsaleswebsite.service.PaymentService;
 import com.example.backendsaleswebsite.service.VNPayService;
@@ -43,6 +44,11 @@ public class OrderController {
 
     @Autowired
     private AccountService accountService; 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderNotificationService orderNotificationService;
     
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -83,9 +89,16 @@ public class OrderController {
             
             // Lưu Delivery vào database
             deliveryService.createDelivery(deliveryRequestDTO);
-
+            
             // Trả về thông tin đơn hàng
             response.put("message", "tạo đơn hàng thành công với phương thức thanh toán là: " + orderRequestDTO.getPaymentMethod());
+            Product product = productRepository.findById(orderRequestDTO.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại"));
+
+            String productName = product.getProductName();
+            Long productQuantity = createdOrder.getOrderQuantity();
+            
+            orderNotificationService.notifyOrder(productName,productQuantity.toString());
         } else {
             // Trả về thông tin đơn hàng nếu không phải phương thức thanh toán chuyển khoản hoặc tiền mặt
             response.put("message", "phương thức thanh toán sai.");
