@@ -37,7 +37,6 @@ public class Account{
 	@Enumerated(EnumType.STRING)
 	private Role role;
   
-  
 	public enum Role {
 		User,
 		Admin;
