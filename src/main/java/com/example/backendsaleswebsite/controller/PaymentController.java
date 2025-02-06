@@ -13,6 +13,7 @@ import com.example.backendsaleswebsite.model.Product;
 import com.example.backendsaleswebsite.repository.OrderRepository;
 import com.example.backendsaleswebsite.repository.ProductRepository;
 import com.example.backendsaleswebsite.dto.DeliveryRequestDTO;
+import com.example.backendsaleswebsite.dto.MomoResponse;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +29,7 @@ public class PaymentController {
     private VNPayService vnPayService;
     private final PaymentService paymentService;
     private final DeliveryService deliveryService;
+    private final MomoPaymentService momoPaymentService;
 
     @Autowired
     private OrderNotificationService orderNotificationService;
@@ -38,9 +40,10 @@ public class PaymentController {
     @Autowired
     private OrderRepository orderRepository;
     
-    public PaymentController(PaymentService paymentService, DeliveryService deliveryService) {
+    public PaymentController(PaymentService paymentService, DeliveryService deliveryService, MomoPaymentService momoPaymentService) {
         this.paymentService = paymentService;
         this.deliveryService = deliveryService;
+        this.momoPaymentService = momoPaymentService;
     }
 
 //    @GetMapping("/home") 
@@ -140,5 +143,15 @@ public class PaymentController {
     public ResponseEntity<String> deletePaymentByOrderId(@PathVariable Long orderId) {
         paymentService.deletePaymentByOrderId(orderId);
         return ResponseEntity.ok("Thanh toán đã được xóa thành công");
+    }
+    
+    @PostMapping("/momo")
+    public ResponseEntity<MomoResponse> createMoMoPayment(@RequestParam String amount) {
+        try {
+            MomoResponse response = momoPaymentService.createPayment(amount);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }
